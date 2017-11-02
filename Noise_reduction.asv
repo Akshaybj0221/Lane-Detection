@@ -1,0 +1,24 @@
+a = imread('frame1.jpg');
+figure();
+subplot(2,2,1);imshow(a);title('Normal RGB');
+
+
+bw = im2bw(a);subplot(2,2,2);imshow(bw);title('Normal BW');
+%%b = medfilt3(a);
+
+sb = edge(bw,'Sobel');
+%b = wiener2(a,[5 5]);
+subplot(2,2,3);imshow(sb);title('Sobel Edge BW');
+
+b = medfilt3(a);
+subplot(2,2,4);imshow(b);title('Median Filter RGB');
+b = im2bw(b);
+
+sb2 = edge(b,'Sobel');
+figure();
+imshow(sb2);title('Sobel Edge MED Filter');
+
+centerIndex = round(size(sb2,1)/2);         %# Get the center index for the rows
+sb2(centerIndex:end,:) = cast(0,class(A));  %# Set the lower half to the value
+                                          %#   0 (of the same type as A)
+
